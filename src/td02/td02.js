@@ -7,7 +7,7 @@
  * is true for every member for the array. We'll use a function we studied last time
  */
 
-export const every = () => {} // TODO
+export const every = (pred, arr) => arr.reduce((acc, el) => acc && pred(el))
 
 /**
  * Exercise 2
@@ -19,7 +19,7 @@ export const every = () => {} // TODO
  * We're going to build, from a given application state, a structure of <figure> HTML tags, each containing a <img> tag
  * and a <figcaption> tag.
  *
- * Let's imaging a minimalist interface that we will be using to describe a tag in our pseudo DOM
+ * Let's imagine a minimalist interface that we will be using to describe a tag in our pseudo DOM
  *
  * {
  *   name: 'div',
@@ -60,10 +60,10 @@ export const createTag = (name, attributes, children) => ({
  * We'll pass an empty array to `children` if there are none.
  */
 
-export const figure = () => {} // TODO
-export const figcaption = () => {} // TODO
-export const img = () => {} // TODO
-export const p = () => {} // TODO
+export const figure = (attributes, children) => createTag('figure', attributes, children)
+export const figcaption = (attributes, children) => createTag('figcaption', attributes, children)
+export const img = (attributes) => createTag('img', attributes, [])
+export const p = (attributes, children) => createTag('p', attributes, children)
 
 /**
  * Exercise 2.2
@@ -81,7 +81,17 @@ export const p = () => {} // TODO
  * </figure>
  */
 
-export const generateMarkupForDog = (url, nom, description) => {} // TODO
+export const generateMarkupForDog = (url, nom, description) => {
+  return figure(null,
+    [
+      img({ src: url }),
+      figcaption(null,
+        [
+          p(null, [nom]),
+          p(null, [description])
+        ])
+    ])
+}
 
 /** Exercise 2.3
  * Write a function which, for a list of dogs (see `./state.js`), returns a list of `figure` tags,
@@ -89,12 +99,18 @@ export const generateMarkupForDog = (url, nom, description) => {} // TODO
  * is required, the root will be a simple `div`
  */
 
-export const generateMarkupForAllDogs = (dogs) => {} // TODO
+export const generateMarkupForAllDogs = (dogs) => {
+  return createTag('div', null,
+    [dogs.map(
+      dog => generateMarkupForDog(dog.url, dog.name, dog.description)
+    )]
+  )
+} // TODO
 
 /** Exercise 2.4
  * Now that we know how to generate the markup, we want to display it only if the user likes dogs,
  * otherwise we return an error message
  */
 
-export const errorMessage = createTag(/* ... */) // TODO
-export const conditionnallyDisplayDogs = (likesDogs, dogs) => {} // TODO
+export const errorMessage = createTag('p', null, ['Tu les as déjà remerciées, les vaches ?!'])
+export const conditionallyDisplayDogs = (likesDogs, dogs) => likesDogs ? generateMarkupForAllDogs(dogs) : errorMessage
