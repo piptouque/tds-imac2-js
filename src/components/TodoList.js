@@ -6,7 +6,7 @@ export default (props) =>
     h('ul', {},
       // eslint-disable-next-line fp/no-mutating-methods
       props.items
-        .sort((a, b) => new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime())
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
         .map(item => h('li', {}, [
           TodoItem({
             done: item.done,
