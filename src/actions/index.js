@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export default {
   toggleDone: (id) => (state) => {
     const itemAtId = state.items.find(item => item.id === id)
@@ -30,5 +32,22 @@ export default {
       }),
       addItemInput: ''
     }
+  },
+  fetchTodos: () => (state, actions) => {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then((response) => {
+        actions.setTodos(response.data.map(todo => ({
+          done: todo.completed,
+          text: todo.title,
+          id: todo.id,
+          createdAt: new Date().toISOString()
+        })))
+      })
+      .catch((err) => console.error('err', err))
+
+    return state
+  },
+  setTodos: (todos) => (state) => {
+    return { ...state, items: todos }
   }
 }
