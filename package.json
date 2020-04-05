@@ -1,23 +1,14 @@
 {
-  "name": "tds-js-imac2",
-  "version": "0.0.1",
+  "name": "imac2_web_dashboard",
+  "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server --port 3000",
-    "test": "mocha -b --require @babel/register --colors -w"
+    "build": "webpack",
+    "start": "webpack-dev-server --port 2210",
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/Koroeskohr/tds-js-imac2"
-  },
-  "keywords": [
-    "fetch",
-    "functional"
-  ],
-  "author": "Victor Viale",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://gitlab.com/Koroeskohr/tds-js-imac2/issues"
+    "url": "https://gitlab.com/piptouque/imac2_web_dashboard"
   },
   "homepage": "https://gitlab.com/Koroeskohr/tds-js-imac2",
   "devDependencies": {
@@ -53,9 +44,8 @@
     "yargs": "^15.0.2"
   },
   "dependencies": {
-    "@hyperapp/logger": "^0.5.0",
-    "axios": "^0.19.2",
-    "hyperapp": "^1.2.10",
+    "@hyperapp/time": "^0.0.10",
+    "hyperapp": "^2.0.4",
     "ramda": "^0.27.0"
   }
 }

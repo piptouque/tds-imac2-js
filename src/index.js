@@ -1,13 +1,15 @@
 import { app } from 'hyperapp'
-import { withLogger } from '@hyperapp/logger'
 
-import actions from './actions'
-import state from './state'
-import view from './components/views/TodoListView'
+import { view } from './components/views/ClockView'
+import { initClockState } from './state'
 
-withLogger(app)(
-  state,
-  actions,
-  view,
-  document.body
-)
+import { interval } from '@hyperapp/time'
+
+const Tick = (state, time) => ({ ...state, time })
+
+app({
+  init: initClockState(),
+  view: view,
+  subscriptions: state => interval(Tick, { ...state, delay: 1000 }),
+  node: document.body
+})

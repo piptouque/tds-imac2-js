@@ -1,53 +1,12 @@
-import axios from 'axios'
 
-export default {
-  toggleDone: (id) => (state) => {
-    const itemAtId = state.items.find(item => item.id === id)
-
-    if (itemAtId === undefined) {
-      console.error(`Item id ${id} could not be found, this should not happen`)
-      return
-    }
-
-    return {
-      ...state,
-      items: state.items
-        .filter(item => item.id !== id)
-        .concat({ ...itemAtId, done: !itemAtId.done })
-    }
+export const actions = {
+  timeToUnits: time => [time.getHours(), time.getMinutes(), time.getSeconds()],
+  formatTime: (hours, minutes, seconds, use24) => {
+    return (use24 ? hours : hours % 12) + ':' +
+    `${minutes}`.padStart(2, '0') + ':' +
+    `${seconds}`.padStart(2, '0') +
+    (use24 ? '' : hours > 12 ? 'PM' : 'AM')
   },
-  updateTodoInput: (event) => (state) => ({ ...state, addItemInput: event.target.value }),
-  addTodoItem: () => (state) => {
-    const input = state.addItemInput
-    if (input.length === 0) {
-      return state
-    }
-    return {
-      ...state,
-      items: state.items.concat({
-        done: false,
-        text: input,
-        id: Math.random().toString(16).substring(2, 8),
-        createdAt: new Date().toISOString()
-      }),
-      addItemInput: ''
-    }
-  },
-  fetchTodos: () => (state, actions) => {
-    axios.get('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => {
-        actions.setTodos(response.data.map(todo => ({
-          done: todo.completed,
-          text: todo.title,
-          id: todo.id,
-          createdAt: new Date().toISOString()
-        })))
-      })
-      .catch((err) => console.error('err', err))
-
-    return state
-  },
-  setTodos: (todos) => (state) => {
-    return { ...state, items: todos }
-  }
+  posixToHumanTime: (time, use24) => actions.formatTime(...actions.timeToUnits(new Date(time)), use24),
+  toggleFormat: state => ({ ...state, use24: !state.use24 })
 }
